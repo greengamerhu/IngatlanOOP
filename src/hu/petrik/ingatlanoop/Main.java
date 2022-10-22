@@ -10,12 +10,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
+
     private static List<Ingatlan> ingatlanok;
     public static void main(String[] args) {
+
         String fajlNev = "realestatetransactions.csv";
         try {
             beolvas(fajlNev);
             //ingatlanok.forEach(System.out::println);
+            /*
             System.out.printf("Az állományban %d eladás került feljegyzésre\n",
                     ingatlanok.stream().count());
             System.out.printf("A legnagyobb alapterületű ingatlan:\n\t%s\n",
@@ -40,7 +43,31 @@ public class Main {
                     .collect(Collectors.groupingBy(Ingatlan::getCity, Collectors.counting()));
             for (Map.Entry<String, Long> entry: varosok.entrySet()) {
                 System.out.printf("%s - %d\n", entry.getKey(), entry.getValue());
-            }
+
+            List<Ingatlan> sortedIngatlan = ingatlanok.stream()
+                    .sorted(Comparator.comparing(Ingatlan:: getCity))
+                    .collect(Collectors.toList());
+            sortedIngatlan.forEach(System.out::println);
+                        */
+
+
+            List<String> asd = ingatlanok.stream()
+                     .map(Ingatlan::getType)
+                     .distinct().
+                     collect(Collectors.toList());
+            asd.forEach(System.out::println);
+            System.out.println("5 legdrágább: ");
+             ingatlanok.stream()
+                     .sorted((a, b) -> b.getPrice()- a.getPrice())
+                    .collect(Collectors.toList())
+                     .stream().limit(5).forEach(System.out::println);
+
+             System.out.println("10 legolcsóbb: ");
+            ingatlanok.stream()
+                    .sorted((a, b) -> a.getPrice()- b.getPrice())
+                    .collect(Collectors.toList())
+                    .stream().limit(10).forEach(System.out::println);
+
         } catch (IOException e) {
             System.out.printf("Hiba történt a(z) %s fájl beolvasása során", fajlNev);
         }
